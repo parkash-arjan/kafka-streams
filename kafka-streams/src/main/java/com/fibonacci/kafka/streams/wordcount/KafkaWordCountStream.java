@@ -19,10 +19,11 @@ public class KafkaWordCountStream {
 	@Autowired
 	private Properties properties;
 
-	@Value(value = "word.count.input.topic")
+	
+	@Value("${word.count.input.topic}")
 	private String wordCountInputTopic;
 
-	@Value(value = "word.count.output.topic")
+	@Value("${word.count.output.topic}")	
 	private String wordCountOutputTopic;
 
 	public void wordCountStream() {
