@@ -1,0 +1,33 @@
+Word-Count-App
+$host.UI.RawUI.WindowTitle = "KSTREAM_PRODUCER"
+
+.\bin\windows\zookeeper-server-start.bat .\config\zookeeper.properties
+
+.\bin\windows\kafka-server-start.bat .\config\server.properties
+
+.\bin\windows\kafka-topics.bat --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic wordCountInputTopic
+
+.\bin\windows\kafka-topics.bat --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic wordCountOutputTopic
+
+
+.\bin\windows\kafka-topics.bat --list --zookeeper localhost:2181
+
+
+.\bin\windows\kafka-console-consumer.bat --bootstrap-server localhost:9092 |
+    --topic wordCountOutputTopic |
+    --from-beginning |
+    --formatter kafka.tools.DefaultMessageFormatter |
+    --property print.key=true |
+    --property print.value=true |
+    --property key.deserializer=org.apache.kafka.common.serialization.StringDeserializer |
+    --property value.deserializer=org.apache.kafka.common.serialization.LongDeserializer
+
+
+.\bin\windows\kafka-console-producer.bat --broker-list localhost:9092 --topic wordCountInputTopic
+
+.\bin\windows\kafka-console-consumer.bat --bootstrap-server localhost:9092 --topic wordCountOutputTopic --from-beginning     --formatter kafka.tools.DefaultMessageFormatter --property print.key=true --property print.value=true --property key.deserializer=org.apache.kafka.common.serialization.StringDeserializer --property value.deserializer=org.apache.kafka.common.serialization.LongDeserializer
+
+
+Color-Count-App
+
+

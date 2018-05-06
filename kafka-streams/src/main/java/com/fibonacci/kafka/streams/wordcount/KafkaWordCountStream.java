@@ -35,6 +35,7 @@ public class KafkaWordCountStream {
 		KStream<String, String> flatMapValues = lowerCaseLines.flatMapValues(textLine -> Arrays.asList(textLine.split(" ")));
 		KStream<String, String> selectKey = flatMapValues.selectKey((key, word) -> word);
 		KGroupedStream<String, String> groupByKey = selectKey.groupByKey();
+		
 		KTable<String, Long> wordCount = groupByKey.count("wordCount");
 		wordCount.to(Serdes.String(), Serdes.Long(), wordCountOutputTopic);
 
